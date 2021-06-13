@@ -3,6 +3,7 @@
 from Cow import Cow
 from Log import Log
 import pandas as pd
+from utils import utils
 from usr.prefs import prefs
 
 
@@ -79,7 +80,15 @@ class CowsHandler:
             "cows"    : cows,
             "total" : totalDistance
         }
-
+    
+    def heatMap(self):
+        utils.createHeatMap({
+            "center"   : self.prefs["CENTER"],
+            "zoom"     : self.prefs["ZOOM"],
+            "filename" : "maps/" + self.prefs["MAP_FILENAME"],
+            "open"     : False,
+            "coords"   : [[row[self.Lat], row[self.Lon]] for _, row in self.dfCows.iterrows()]
+        })
 
 # Main func
 def main():
@@ -87,6 +96,7 @@ def main():
     ch.loadCows()
     ch.concatDataFrames()
     ch.heatMapByEachCow()
+    ch.heatMap()
 
 if __name__ == "__main__":
     log = Log()

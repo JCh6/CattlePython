@@ -11,7 +11,6 @@ prefs["CENTER"]       = [52.83843184681842, -1.2513395961491471]
 prefs["ZOOM"]         = 20
 
 '''
-    1. Recorrido de todas las vacas (Pintar Mapa)
     2. Recorrido de cada vaca y recorrido total por dia
     3. Otro archivo para produccion por dia
     4. Rangos para las horas (mañana, tarde, noche)

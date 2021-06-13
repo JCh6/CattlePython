@@ -1,6 +1,10 @@
 ### utils.py
 
+import os
 import math
+import folium
+import webbrowser
+from folium import plugins
 
 
 def haversine(lat1, lon1, lat2, lon2):
@@ -18,3 +22,13 @@ def haversine(lat1, lon1, lat2, lon2):
     c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
     
     return R * c
+
+def createHeatMap(mapOptions):
+    myMap = folium.Map(mapOptions["center"], zoom_start=mapOptions["zoom"])
+    mapfilename = mapOptions["filename"] + ".html"
+
+    plugins.HeatMap(mapOptions["coords"]).add_to(myMap)
+    myMap.save(mapfilename)
+
+    if mapOptions["open"]:
+        webbrowser.open("file://" + os.path.abspath(os.getcwd()) + "/" + mapfilename)

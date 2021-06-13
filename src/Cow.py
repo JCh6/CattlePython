@@ -1,11 +1,7 @@
 ### Cow.py
 
-import os
-import folium
-import webbrowser
 import pandas as pd
 from utils import utils
-from folium import plugins
 
 
 class Cow:
@@ -56,15 +52,8 @@ class Cow:
         return None
 
     def createHeatMap(self, mapOptions):
-        myMap = folium.Map(mapOptions["center"], zoom_start=mapOptions["zoom"])
-        mapfilename = mapOptions["filename"] + ".html"
-
-        hd = [[row[self.Lat], row[self.Lon]] for _, row in self.dataFrame.iterrows()]
-        plugins.HeatMap(hd).add_to(myMap)
-        myMap.save(mapfilename)
-
-        if mapOptions["open"]:
-            webbrowser.open("file://" + os.path.abspath(os.getcwd()) + "/" + mapfilename)
+        mapOptions["coords"] = [[row[self.Lat], row[self.Lon]] for _, row in self.dataFrame.iterrows()]
+        utils.createHeatMap(mapOptions)
         
     def getDistanceTraveled(self):
         distance = 0
