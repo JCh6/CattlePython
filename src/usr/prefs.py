@@ -2,10 +2,10 @@
 
 prefs = {}
 
-prefs["fileName"] = ["cow1.txt", "cow2.txt"]
-prefs["columns"] = { 1: "Time", 2: "Date", 3: "Lat", 4: "Lon" }
-prefs["latitudeKey"] = "Lat"
-prefs["longitudeKey"] = "Lon"
+prefs["FILES"] = ["cow1.txt", "cow2.txt"]
+prefs["COLUMNS"] = { 1: "Time", 2: "Date", 3: "Lat", 4: "Lon" }
+prefs["LAT_KEY"] = "Lat"
+prefs["LON_KEY"] = "Lon"
 prefs["mapfilename"] = "heat_map"
 prefs["center"] = [52.83843184681842, -1.2513395961491471]
 prefs["zoom"] = 20

@@ -1,11 +1,52 @@
 ### main.py
 
 import os
+from Cow import Cow
+from Log import Log
+from usr.prefs import prefs
 import folium
 from folium import plugins
 import webbrowser
-import pandas as pd
-from usr.prefs import prefs
+
+def loadCows(cows):
+    for filename in prefs["FILES"]:
+        newCow = Cow("data/" + filename)
+        err = newCow.setDataFrame(None, "|")
+        
+        if err != None:
+            log.fatal(err)
+
+        err = newCow.setNewColumns(prefs["COLUMNS"])
+
+        if err != None:
+            log.fatal(err)
+        
+        errLat = newCow.setLatitudeKey(prefs["LAT_KEY"])
+
+        if err != None:
+            log.fatal(err)
+
+        err = newCow.setLatitudeKey(prefs["LON_KEY"])
+
+        if err != None:
+            log.fatal(err)
+
+        cows.append(newCow)
+    
+    log.info("Cows loaded successfully")
+
+
+def main():
+    cows = []
+    loadCows(cows)
+    
+
+
+if __name__ == "__main__":
+    log = Log()
+    main()
+
+
 
 '''
 
