@@ -4,6 +4,7 @@ import os
 import folium
 import webbrowser
 import pandas as pd
+from utils import utils
 from folium import plugins
 
 
@@ -58,9 +59,19 @@ class Cow:
         myMap = folium.Map(mapOptions["center"], zoom_start=mapOptions["zoom"])
         mapfilename = mapOptions["filename"] + ".html"
 
-        hd = [[row[self.Lat], row[self.Lon]] for i, row in self.dataFrame.iterrows()]
+        hd = [[row[self.Lat], row[self.Lon]] for _, row in self.dataFrame.iterrows()]
         plugins.HeatMap(hd).add_to(myMap)
         myMap.save(mapfilename)
 
         if mapOptions["open"]:
             webbrowser.open("file://" + os.path.abspath(os.getcwd()) + "/" + mapfilename)
+        
+    def getDistanceTraveled(self):
+        distance = 0
+
+        for i in range(len(self.dataFrame) - 1):
+            row1 = self.dataFrame.iloc[i]
+            row2 = self.dataFrame.iloc[i + 1]
+            distance += utils.haversine(row1[self.Lat], row1[self.Lon], row2[self.Lat], row2[self.Lon])
+
+        return distance

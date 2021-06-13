@@ -6,55 +6,87 @@ import pandas as pd
 from usr.prefs import prefs
 
 
-def loadCows(cows):
-    for name, filename in prefs["FILES"].items():
-        newCow = Cow(name, "data/" + filename)
+class CowsHandler:
+    def __init__(self, prefs):
+        self.prefs = prefs
+        self.cows = []
+        self.dfCows = None
+        self.Lat = prefs["LAT_KEY"]
+        self.Lon = prefs["LON_KEY"]
 
-        err = newCow.setDataFrame(None, "|")
-        if err != None: log.fatal(err)
+    def getCows(self):
+        return self.cows
 
-        err = newCow.setNewColumns(prefs["COLUMNS"])
-        if err != None: log.fatal(err)
+    def getDataFrame(self):
+        return self.dfCows
+
+    def loadCows(self):
+        for name, filename in self.prefs["FILES"].items():
+            newCow = Cow(name, "data/" + filename)
+
+            err = newCow.setDataFrame(None, "|")
+            if err != None: log.fatal(err)
+
+            err = newCow.setNewColumns(self.prefs["COLUMNS"])
+            if err != None: log.fatal(err)
+            
+            err = newCow.setLatitudeKey(self.Lat)
+            if err != None: log.fatal(err)
+
+            err = newCow.setLongitudeKey(self.Lon)
+            if err != None: log.fatal(err)
+
+            self.cows.append(newCow)
         
-        err = newCow.setLatitudeKey(prefs["LAT_KEY"])
-        if err != None: log.fatal(err)
+        log.info("Cows loaded successfully")
 
-        err = newCow.setLongitudeKey(prefs["LON_KEY"])
-        if err != None: log.fatal(err)
+    def heatMapByEachCow(self):
+        for cow in self.cows:
+            cow.createHeatMap({
+                "center"   : self.prefs["CENTER"],
+                "zoom"     : self.prefs["ZOOM"],
+                "filename" : "maps/" + self.prefs["MAP_FILENAME"] + "_" + cow.getName(),
+                "open"     : False
+            })
 
-        cows.append(newCow)
-    
-    log.info("Cows loaded successfully")
+        log.info("Maps created successfully")
 
-def heatMapByCow(cows):
-    for cow in cows:
-        cow.createHeatMap({
-            "center"   : prefs["CENTER"],
-            "zoom"     : prefs["ZOOM"],
-            "filename" : "maps/" + prefs["MAP_FILENAME"] + "_" + cow.getName(),
-            "open"     : False
-        })
-    log.info("Maps created successfully")
+    def concatDataFrames(self):
+        dfs = []
 
-def concatDataFrames(cows):
-    dfs = []
+        if len(self.cows) < 2:
+            return
 
-    if len(cows) < 2:
-        return None
+        for cow in self.cows:
+            dfs.append(cow.getDataFrame())
 
-    for cow in cows:
-        dfs.append(cow.getDataFrame())
+        log.info("Dataframes concatenated successfully")
+        self.dfCows = pd.concat(dfs)
 
-    return pd.concat(dfs)
+    def getDistanceTraveled(self):
+        totalDistance = 0
+        cows = []
 
+        for cow in self.cows:
+            distance = cow.getDistanceTraveled()
+            totalDistance += distance
+            cows.append({
+                "name"     : cow.getName(),
+                "distance" : distance
+            })
+        
+        return {
+            "cows"    : cows,
+            "total" : totalDistance
+        }
+
+
+# Main func
 def main():
-    cows = []
-    dfCows = None
-    
-    loadCows(cows)
-    dfCows = concatDataFrames(cows)
-    heatMapByCow(cows)
-
+    ch = CowsHandler(prefs)
+    ch.loadCows()
+    ch.concatDataFrames()
+    ch.heatMapByEachCow()
 
 if __name__ == "__main__":
     log = Log()
