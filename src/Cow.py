@@ -1,15 +1,24 @@
 ### Cow.py
 
+import os
+import folium
+import webbrowser
 import pandas as pd
+from folium import plugins
+
 
 class Cow:
-    def __init__(self, filename):
+    def __init__(self, name, filename):
+        self.name = name
         self.filename = filename
+
+    def getName(self):
+        return self.name
 
     def getFilename(self):
         return self.filename
     
-    def setDataFrame(self, hasHeader=None, delimiter=","):
+    def setDataFrame(self, hasHeader=0, delimiter=","):
         try:
             self.dataFrame = pd.read_csv(self.filename, header=hasHeader, delimiter=delimiter)
             return None
@@ -22,12 +31,14 @@ class Cow:
     def setLatitudeKey(self, key):
         if key in self.dataFrame:
             self.Lat = key
+            self.dataFrame[key] = self.dataFrame[key].astype(float)
             return None
         return '"{}" column does not exist'.format(key)
     
     def setLongitudeKey(self, key):
         if key in self.dataFrame:
             self.Lon = key
+            self.dataFrame[key] = self.dataFrame[key].astype(float)
             return None
         return '"{}" column does not exist'.format(key)
     
@@ -42,3 +53,14 @@ class Cow:
                 return "Error, please check the columns"
 
         return None
+
+    def createHeatMap(self, mapOptions):
+        myMap = folium.Map(mapOptions["center"], zoom_start=mapOptions["zoom"])
+        mapfilename = mapOptions["filename"] + ".html"
+
+        hd = [[row[self.Lat], row[self.Lon]] for i, row in self.dataFrame.iterrows()]
+        plugins.HeatMap(hd).add_to(myMap)
+        myMap.save(mapfilename)
+
+        if mapOptions["open"]:
+            webbrowser.open("file://" + os.path.abspath(os.getcwd()) + "/" + mapfilename)
