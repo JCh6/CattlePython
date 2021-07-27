@@ -39,6 +39,12 @@ class Cow:
             return None
         return '"{}" column does not exist'.format(key)
     
+    def setDateKey(self, key):
+        if key in self.dataFrame:
+            self.Date = key
+            return None
+        return '"{}" column does not exist'.format(key)
+    
     def setNewColumns(self, columns):
         numCols = len(self.dataFrame.columns)
 
@@ -57,10 +63,30 @@ class Cow:
         
     def getDistanceTraveled(self):
         distance = 0
+        lastRow = self.dataFrame.iloc[0] if len(self.dataFrame) > 0 else None
 
-        for i in range(len(self.dataFrame) - 1):
-            row1 = self.dataFrame.iloc[i]
-            row2 = self.dataFrame.iloc[i + 1]
-            distance += utils.haversine(row1[self.Lat], row1[self.Lon], row2[self.Lat], row2[self.Lon])
+        for i in range(1, len(self.dataFrame)):
+            currentRow = self.dataFrame.iloc[i]
+            distance += utils.haversine(lastRow[self.Lat], lastRow[self.Lon], currentRow[self.Lat], currentRow[self.Lon])
+            lastRow = currentRow
 
         return distance
+    
+    def getDistanceTraveledPerDay(self):
+        lastRow = self.dataFrame.iloc[0] if len(self.dataFrame) > 0 else None
+        resp = {lastRow[self.Date] : lastRow}
+        dist = {lastRow[self.Date] : 0}
+
+        for i in range(1, len(self.dataFrame)):
+            currentRow = self.dataFrame.iloc[i]
+            currDate = currentRow[self.Date]
+
+            if currDate not in resp:
+                dist[currDate] = 0
+                resp[currDate] = currentRow                
+
+            lastRow = resp[currDate]
+            dist[currDate] += utils.haversine(lastRow[self.Lat], lastRow[self.Lon], currentRow[self.Lat], currentRow[self.Lon])
+            resp[currDate] = currentRow
+        
+        return dist
