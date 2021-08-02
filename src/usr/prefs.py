@@ -2,7 +2,7 @@
 
 prefs = {}
 
-prefs["FILES"]        = { "Cow1": "Datos2vaca1.txt", "Cow3": "Datos2vaca3.txt", "Cow4": "Datos2vaca4.txt", "Cow6": "Datos2vaca6.txt", "Cow7": "Datos2vaca7.txt" }
+prefs["FILES"]        = { "Cow1": "CowSample.txt"}
 prefs["COLUMNS"]      = { 0: "Lat", 1: "Lon", 2: "Time", 3: "Date" }
 prefs["LAT_KEY"]      = "Lat"
 prefs["LON_KEY"]      = "Lon"

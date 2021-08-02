@@ -58,7 +58,7 @@ class CowManager:
     def concatDataFrames(self):
         dfs = []
 
-        if len(self.cows) < 2:
+        if len(self.cows) < 1:
             return
 
         for cow in self.cows:
