@@ -26,7 +26,7 @@ class CowManager:
         for name, filename in self.prefs["FILES"].items():
             newCow = Cow(name, "data/" + filename)
 
-            err = newCow.setDataFrame(None, "|")
+            err = newCow.setDataFrame(None, self.prefs["SEPARATOR"])
             if err != None: log.fatal(err)
 
             err = newCow.setNewColumns(self.prefs["COLUMNS"])
@@ -43,6 +43,7 @@ class CowManager:
 
             self.cows.append(newCow)
         
+        self.concatDataFrames()
         log.info("Cows loaded successfully")
 
     def heatMapByEachCow(self):

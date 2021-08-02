@@ -51,7 +51,7 @@ class Cow:
         for key in columns.keys():
             colHeader = columns[key]
             if key < numCols:
-                self.dataFrame[colHeader] = self.dataFrame.apply(lambda row: str(row[key]).split("=")[1], axis=1)
+                self.dataFrame[colHeader] = self.dataFrame.apply(lambda row: str(row[key]), axis=1)
             else:
                 return "Error, please check the columns"
 

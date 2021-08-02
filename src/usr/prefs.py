@@ -2,16 +2,18 @@
 
 prefs = {}
 
-prefs["FILES"]        = { "Cow1": "cow1.txt", "Cow2": "cow2.txt" }
-prefs["COLUMNS"]      = { 1: "Time", 2: "Date", 3: "Lat", 4: "Lon" }
+prefs["FILES"]        = { "Cow1": "Datos2vaca1.txt", "Cow3": "Datos2vaca3.txt", "Cow4": "Datos2vaca4.txt", "Cow6": "Datos2vaca6.txt", "Cow7": "Datos2vaca7.txt" }
+prefs["COLUMNS"]      = { 0: "Lat", 1: "Lon", 2: "Time", 3: "Date" }
 prefs["LAT_KEY"]      = "Lat"
 prefs["LON_KEY"]      = "Lon"
 prefs["DATE_KEY"]     = "Date"
 prefs["MAP_FILENAME"] = "heatmap"
-prefs["CENTER"]       = [52.83843184681842, -1.2513395961491471]
+prefs["SEPARATOR"]    = ";"
+prefs["CENTER"]       = [4.76994, -74.23248]
 prefs["ZOOM"]         = 20
 
 '''
+    5 vacas, 20 dias, 5-8 horas cada (31s), 10 5,7pm
     3. Otro archivo para produccion por dia
     4. Rangos para las horas (mañana, tarde, noche)
     analitica descriptica (media, desviaciones)

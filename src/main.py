@@ -8,8 +8,7 @@ from CowManager import CowManager
 def main():
     cm = CowManager(prefs)
     cm.loadCows()
-    cm.concatDataFrames()
-    cm.heatMap(False)
+    cm.heatMap(True)
     print(cm.getDistanceTraveled())
     print(cm.getDistanceTraveledPerDay())
 
