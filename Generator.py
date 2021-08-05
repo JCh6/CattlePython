@@ -1,6 +1,5 @@
 ### Generator.py
 
-
 from datetime import time, timedelta, datetime, date
 from random import randint, uniform
 import pandas as pd
@@ -81,5 +80,4 @@ for j in range(1, days + 1):
         data.append(row)
 
 df = pd.DataFrame(data)
-print(df)
 df.to_csv("data/clean/Cow1.txt", header=False, index=False)
