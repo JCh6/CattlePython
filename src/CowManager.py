@@ -110,3 +110,20 @@ class CowManager:
 
         if allCows: self.heatMapByEachCow()
         log.info("Maps created successfully")
+
+    def genCSV(self, obj, header=[], filename="out"):
+        data = []
+
+        for cow in obj:
+            dates = cow["data"]["dates"]
+            for date in dates:
+                row = []
+                row.append(cow["name"])
+                row.append(dates[date])
+                row.append(date)
+                data.append(row)
+        
+        utils.genCSV(data, header, filename)
+        log.info(".csv created successfully")
+            
+
