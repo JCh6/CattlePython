@@ -4,6 +4,7 @@ import os
 import math
 import folium
 import webbrowser
+import pandas as pd
 from folium import plugins
 
 
@@ -32,3 +33,16 @@ def createHeatMap(mapOptions):
 
     if mapOptions["open"]:
         webbrowser.open("file://" + os.path.abspath(os.getcwd()) + "/" + mapfilename)
+
+def genCSV(data, header=[], filename="out"):
+    df = pd.DataFrame(data, columns=header)
+    df.to_csv("data/out/" + filename + ".csv", index=False)
+
+def getDataFrameFromExcel(filename, cols):
+    return pd.read_excel(filename, usecols=cols)
+
+def writeExcel(data, filename="metrics.xlsx"):
+    df = pd.DataFrame(data)
+    writer = pd.ExcelWriter("data/out/" + filename, engine="xlsxwriter")
+    df.to_excel(writer, sheet_name="Sheet1", index=False)
+    writer.save()
