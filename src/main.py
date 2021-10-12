@@ -82,8 +82,7 @@ def read():
 '''
 Funcion que realiza las siguientes acciones:
     - Carga el archivo excel que contiene la produccion
-    - Guarda un .xlsx con las metricas de la distancia, distancia total y produccion
-    - Muestra en pantalla el diagrama de caja, el diagrama de barras y el histograma
+    - Ejecuta el modelo analitico
 '''
 def predict():
     alpha = prefs["ALPHA"]
@@ -139,6 +138,7 @@ def predict():
     print(modelo.summary())
 
     # Intervalos de confianza para los coeficientes del modelo
+    print("Intervalo de confianza para los coeficientes:")
     print(modelo.conf_int(alpha=alpha))
 
     # Predicciones con intervalo de confianza de (1 - alpha)
